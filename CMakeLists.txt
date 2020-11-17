@@ -5,7 +5,9 @@ set(COMPONENT_NAME brbox-mkimage)  #set the name of the binary
 project(${COMPONENT_NAME})
 set(MKIMG_HOST_BUILD ON CACHE BOOL ON) #by default switch-off local-x86 host build
 set(AUTO_SVN_VERSION OFF CACHE BOOL OFF) #by default dont include svn revision numbers
+set(MKUIMG_SCR brbox-mkuimg.sh)
 file(GLOB SOURCES "*.c")
+file(GLOB  INSTALLFILES ${MKUIMG_SCR} )
 # for local x86 host, build as 32bit binary
 if(${MKIMG_HOST_BUILD})
 	set(CMAKE_C_COMPILER gcc)
@@ -21,7 +23,7 @@ add_executable(${COMPONENT_NAME} ${SOURCES})
 add_definitions( -DUSE_HOSTCC )
 
 install(TARGETS ${COMPONENT_NAME} DESTINATION sbin)
-
+install(PROGRAMS ${INSTALLFILES} DESTINATION sbin)
 #automatically include svn revision to a headerfile which will be included in this component
 if(${AUTO_SVN_VERSION})
 	find_package(Subversion REQUIRED)
